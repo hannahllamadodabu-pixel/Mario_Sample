@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aguinaldo Shrine Interactive</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    overflow: hidden;
+    background: black;
+}
+
+/* ===== HEADER (GLASS + LINE DESIGN) ===== */
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    text-align: center;
+    color: white;
+    padding: 15px 0;
+    backdrop-filter: blur(12px);
+    background: rgba(10,15,25,0.6);
+    border-bottom: 1px solid rgba(0,200,255,0.3);
+    z-index: 1000;
+}
+
+/* decorative line */
+header::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 20%;
+    width: 60%;
+    height: 2px;
+    background: linear-gradient(to right, transparent, #00d9ff, transparent);
+}
+
+/* ===== VIEWER ===== */
+.viewer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.viewer iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* ===== PANELS ===== */
+.panel {
+    position: fixed;
+    top: 80px;
+    height: calc(100% - 160px);
+    backdrop-filter: blur(14px);
+    background: rgba(15,20,30,0.75);
+    color: white;
+    padding: 20px;
+    display: none;
+    z-index: 1100;
+}
+
+/* LEFT PANEL */
+.left-panel {
+    left: 0;
+    width: 260px;
+}
+
+/* RIGHT PANEL */
+.right-panel {
+    right: 0;
+    width: 320px;
+    overflow-y: auto;
+}
+
+/* CLOSE BUTTON */
+.close-btn {
+    float: right;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* ===== AREA BUTTONS ===== */
+.area-buttons button {
+    width: 100%;
+    margin: 8px 0;
+    padding: 10px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.05);
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.area-buttons button:hover {
+    background: rgba(0,200,255,0.3);
+}
+
+/* ACTIVE BUTTON */
+.active-btn {
+    background: rgba(0,200,255,0.5) !important;
+}
+
+/* ===== BOTTOM NAV ===== */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 12px;
+    backdrop-filter: blur(12px);
+    background: rgba(10,15,25,0.6);
+    border-top: 1px solid rgba(0,200,255,0.3);
+    z-index: 1200;
+}
+
+/* bottom decorative line */
+.bottom-nav::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 20%;
+    width: 60%;
+    height: 2px;
+    background: linear-gradient(to right, transparent, #00d9ff, transparent);
+}
+
+.bottom-nav button {
+    padding: 10px 20px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.05);
+    color: white;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+/* ACTIVE NAV BUTTON */
+.nav-active {
+    background: rgba(0,200,255,0.4);
+}
+
+/* ===== FOOTER ===== */
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 10px;
+    color: white;
+    pointer-events: none;
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+    <h3>3D Interactive Aguinaldo Shrine</h3>
+</header>
+
+<!-- LEFT PANEL -->
+
+<div class="panel left-panel" id="leftPanel">
+    <button class="close-btn" onclick="closePanels()">✖</button>
+    <h4>Areas</h4>
+
+```
+<div class="area-buttons">
+    <button onclick="selectArea(this,'balcony')">Balcony</button>
+    <button onclick="selectArea(this,'grandhall')">Grand Hall</button>
+    <button onclick="selectArea(this,'window')">Windows</button>
+</div>
+```
+
+</div>
+
+<!-- RIGHT PANEL -->
+
+<div class="panel right-panel" id="rightPanel">
+    <button class="close-btn" onclick="closePanels()">✖</button>
+
+```
+<h3 id="title">Select an Area</h3>
+<p id="description">Information will appear here.</p>
+<img id="image" src="" width="100%">
+```
+
+</div>
+
+<!-- VIEWER -->
+
+<div class="viewer">
+    <iframe title="Mario Sample2"
+    src="https://sketchfab.com/models/29b0feeccd1d40dda00fe347eb6ebf06/embed?transparent=1"
+    allowfullscreen></iframe>
+</div>
+
+<!-- NAV -->
+
+<div class="bottom-nav">
+    <button onclick="showMode(this,'exterior')">Exterior</button>
+    <button onclick="showMode(this,'area')">Area</button>
+    <button onclick="showMode(this,'info')">Info</button>
+</div>
+
+<footer>
+    © 2026 3D Aguinaldo Shrine Project
+</footer>
+
+<script>
+
+/* NAV MODE */
+function showMode(btn, mode) {
+    resetNav();
+
+    btn.classList.add("nav-active");
+
+    closePanels();
+
+    if(mode === "area") {
+        document.getElementById("leftPanel").style.display = "block";
+    }
+
+    if(mode === "info") {
+        document.getElementById("rightPanel").style.display = "block";
+    }
+}
+
+/* CLOSE */
+function closePanels() {
+    document.getElementById("leftPanel").style.display = "none";
+    document.getElementById("rightPanel").style.display = "none";
+}
+
+/* RESET NAV */
+function resetNav() {
+    document.querySelectorAll(".bottom-nav button")
+    .forEach(b => b.classList.remove("nav-active"));
+}
+
+/* AREA SELECT */
+function selectArea(btn, area) {
+    document.querySelectorAll(".area-buttons button")
+    .forEach(b => b.classList.remove("active-btn"));
+
+    btn.classList.add("active-btn");
+
+    document.getElementById("rightPanel").style.display = "block";
+
+    const title = document.getElementById("title");
+    const desc = document.getElementById("description");
+    const img = document.getElementById("image");
+
+    if(area === "balcony"){
+        title.innerText = "Balcony";
+        desc.innerText = "The balcony is where Philippine Independence was declared.";
+        img.src = "https://via.placeholder.com/300";
+    }
+
+    if(area === "grandhall"){
+        title.innerText = "Grand Hall";
+        desc.innerText = "The grand hall represents residential and ceremonial space.";
+        img.src = "https://via.placeholder.com/300";
+    }
+
+    if(area === "window"){
+        title.innerText = "Windows";
+        desc.innerText = "Windows serve both ventilation and defensive observation.";
+        img.src = "https://via.placeholder.com/300";
+    }
+}
+</script>
+
+</body>
+</html>
